@@ -14,6 +14,7 @@ class WebSocket:
         self.websocket = None
         self.token = self.config.getToken()
         self.ws_url = f"ws://{self.config.getHost()}:{self.config.getPort()}/v1/events"
+        self.msgservice = MessageService()
     
     async def connect(self):
         # 链接ws
@@ -36,7 +37,7 @@ class WebSocket:
         while True:
             try:
                 message = await self.websocket.recv()
-                MessageService().receive(message)
+                self.msgservice.receive(message)
             except websockets.ConnectionClosed:
                 print("WebSocket connection closed.")
                 break

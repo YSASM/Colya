@@ -19,10 +19,22 @@ class MessageService:
         if data['op'] == 4:
             platform = data['body']['logins'][0]['platform']
             bot_name = data['body']['logins'][0]['user']['name']
-            logging.info(f"Satori驱动器连接成功，{bot_name} 已上线 [{platform}] ！")
+            logging.info(f"Satori服务已连接，{bot_name} 已上线 [{platform}] ！")
         elif data['op'] == 0:
             session = Session(data["body"])
-            self.pluginLoader.matchMsgPlugin(session)
+            if 'message' in session.type:
+                if not session.message.content:
+                    return
+                else:
+                    try:
+                        self.pluginLoader.matchMsgPlugin(session)
+                    except Exception as e:
+                        logging.error("插件运行出错:",e)
+            else:
+                try:
+                    self.pluginLoader.matchEventPlugin(session)
+                except Exception as e:
+                    logging.error("插件运行出错:",e)
             user_id = session.user.id
             try:
                 member = session.user.name
@@ -31,13 +43,12 @@ class MessageService:
             except:
                 # 为什么是QQ用户，因为就QQ可能拿不到成员name...
                 member = f'QQ用户{user_id}'
-            content = f"[{'群组消息:'+str(session.guild.name)+'|'+member if session.isGroupMsg else '私聊消息:'+member}]"+session.message.content
+            content = f"[{'群组消息:'+str(session.guild.name)+'|'+member if session.isGroupMsg else '私聊消息:'+member}]"+str(session.message.content)
             # logging.info(( {member} )" + session.message.content)
             logging.info(content)
         elif data['op'] == 2:
             # print('[心跳状态：存活]')
-            pass
-
+            logging.info("心跳存活")
 
 
 
@@ -48,12 +59,19 @@ class Session:
         self.platform = body.get('platform')
         self.self_id = body.get('self_id')
         self.timestamp = body.get('timestamp')
-        self.user = User(body.get('user', {}))
         self.channel = Channel(body.get('channel', {}))
         self.guild = Guild(body.get('guild', {}))
         self.member = body.get('member', {})
         self.message = Message(body.get('message', {}))
+
+        self.user = User(body.get('user', {}))
+        
+        
+        
         self.isGroupMsg = self.guild.name != None
+
+
+
 
 class setMsgSession(Session):
     def __init__(self,platform, channel_id, self_id) -> None:
@@ -64,7 +82,7 @@ class setMsgSession(Session):
             },
             'self_id':self_id
         }
-        super().__init__(self,body)
+        super().__init__(body)
 
 class User:
     def __init__(self, user_info):
@@ -96,48 +114,3 @@ class Message:
     def __init__(self, message_info):
         self.id = message_info.get('id')
         self.content = message_info.get('content')
-
-
-class SendMessage:
-    def __init__(self,session:Session) -> None:
-        self.session = session
-        self.config = Config()
-    
-    def send_string(self,string):
-        """
-        发送消息到指定频道。
-        Parameters:
-        string (str): 消息内容。
-        Returns:
-        dict: 包含消息信息的字典，如果发送失败则返回None。
-        """
-        # API endpoint
-
-        endpoint = f'http://{self.config.getHost()}:{self.config.getPort()}/v1/message.create'  # 替换为实际API endpoint
-
-        # 构建请求参数
-        request_data = {
-            'channel_id': self.session.guild.id,
-            'content': string
-        }
-
-        # 构建请求头
-        headers = {
-            'Content-Type': 'application/json',
-            'Authorization': f'Bearer {self.config.getToken()}',
-            'X-Platform': self.session.platform,
-            'X-Self-ID': self.session.self_id
-        }
-
-        # 发送POST请求
-        # response = requests.post(endpoint, data=json.dumps(request_data), headers=headers)
-        response = requests.post(endpoint, data=json.dumps(request_data), headers=headers, verify=True)
-
-        # 检查响应
-        if response.status_code == 200:
-            # 解析响应为JSON格式
-            response_data = response.json()
-            return response_data
-        else:
-            print('Failed to create message. Status code:', response.status_code)
-            return None
