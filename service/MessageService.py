@@ -1,6 +1,9 @@
 import json
 import logging
 import re
+
+import requests
+from Colya.Config.config import Config
 from Colya.utils.utils import async_call,msgFormat
 from Colya.plugin.loadPlugin import Loader
 class MessageService:
@@ -34,6 +37,9 @@ class MessageService:
         elif data['op'] == 2:
             # print('[心跳状态：存活]')
             pass
+
+
+
 class Session:
     def __init__(self, body):
         self.id = body.get('id')
@@ -47,36 +53,6 @@ class Session:
         self.member = body.get('member', {})
         self.message = Message(body.get('message', {}))
         self.isGroupMsg = self.guild.name != None
-class RanaUtils:
-    @staticmethod
-    def escape_special_characters(message):
-        # 替换特殊字符为转义字符
-        message = message.replace('"', '&quot;')
-        message = message.replace('&', '&amp;')
-        message = message.replace('<', '&lt;')
-        message = message.replace('>', '&gt;')
-        return message
-
-    @staticmethod
-    def show_log(session):
-        # 展示日志
-        message_content = session.message.content
-
-        html_tag_pattern = re.compile(r'<.*?>')
-        # 将所有HTML标签替换为占位符
-        cleaned_text = re.sub(html_tag_pattern, '[xml元素]', message_content)
-        cleaned_text = cleaned_text[0:15] + '...' if len(cleaned_text) > 15 else cleaned_text
-
-        user_id = session.user.id
-        try:
-            member = session.user.name
-            if not member:
-                member = f'QQ用户{user_id}'
-        except:
-            # 为什么是QQ用户，因为就QQ可能拿不到成员name...
-            member = f'QQ用户{user_id}'
-        print(f"[ {session.guild.name} ] （ {member} ）{cleaned_text}")
-
 
 class User:
     def __init__(self, user_info):
@@ -110,3 +86,46 @@ class Message:
         self.content = message_info.get('content')
 
 
+class SendMessage:
+    def __init__(self,session:Session) -> None:
+        self.session = session
+        self.config = Config()
+    
+    def send_string(self,string):
+        """
+        发送消息到指定频道。
+        Parameters:
+        string (str): 消息内容。
+        Returns:
+        dict: 包含消息信息的字典，如果发送失败则返回None。
+        """
+        # API endpoint
+
+        endpoint = f'http://{self.config.getHost()}:{self.config.getPort()}/v1/message.create'  # 替换为实际API endpoint
+
+        # 构建请求参数
+        request_data = {
+            'channel_id': self.session.guild.id,
+            'content': string
+        }
+
+        # 构建请求头
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': f'Bearer {self.config.getToken()}',
+            'X-Platform': self.session.platform,
+            'X-Self-ID': self.session.self_id
+        }
+
+        # 发送POST请求
+        # response = requests.post(endpoint, data=json.dumps(request_data), headers=headers)
+        response = requests.post(endpoint, data=json.dumps(request_data), headers=headers, verify=True)
+
+        # 检查响应
+        if response.status_code == 200:
+            # 解析响应为JSON格式
+            response_data = response.json()
+            return response_data
+        else:
+            print('Failed to create message. Status code:', response.status_code)
+            return None

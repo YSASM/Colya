@@ -72,6 +72,8 @@ class Loader:
     def matchMsgPlugin(self,session):
         msg = session.message.content
         for plugin in self.plugins:
-            if re.match(plugin.msg_str,msg):
+            cp = re.compile(plugin.msg_str)
+            match = re.findall(cp,msg)
+            if match:
                 self.msg(plugin.main,session)
         

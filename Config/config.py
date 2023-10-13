@@ -1,9 +1,13 @@
 import json
-
+import  logging
 
 class Config:
     def __init__(self) -> None:
-        self.config = json.load(open('config.json'))
+        try:
+            self.config = json.load(open('config.json'))
+        except:
+            logging.error('获取config.json失败')
+            exit(0)
     def getConfig(self):
         return self.config
     def getPort(self):
@@ -11,6 +15,10 @@ class Config:
     def getHost(self):
         return self.config.get('host','localhost')
     def getToken(self):
-        return self.config.get('token','')
+        token = self.config.get('token',None)
+        if not token:
+            logging.error('token为空')
+            exit(0)
+        return token
     def getHeartbeatCd(self):
         return self.config.get('heart_beat_cd',60)
