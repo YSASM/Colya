@@ -22,6 +22,7 @@ class MessageService:
             logging.info(f"Satori服务已连接，{bot_name} 已上线 [{platform}] ！")
         elif data['op'] == 0:
             session = Session(data["body"])
+            user_id = session.user.id
             if 'message' in session.type:
                 if not session.message.content:
                     return
@@ -30,22 +31,32 @@ class MessageService:
                         self.pluginLoader.matchMsgPlugin(session)
                     except Exception as e:
                         logging.error("插件运行出错:",e)
+                try:
+                    member = session.user.name
+                    if not member:
+                        member = f'QQ用户{user_id}'
+                except:
+                    # 为什么是QQ用户，因为就QQ可能拿不到成员name...
+                    member = f'QQ用户{user_id}'
+                content = f"[{'群组消息:'+str(session.guild.name)+'|'+member if session.isGroupMsg else '私聊消息:'+member}]"+str(session.message.content)
+                # logging.info(( {member} )" + session.message.content)
+                logging.info(content)
             else:
                 try:
                     self.pluginLoader.matchEventPlugin(session)
                 except Exception as e:
                     logging.error("插件运行出错:",e)
-            user_id = session.user.id
-            try:
-                member = session.user.name
-                if not member:
+                try:
+                    member = session.user.name
+                    if not member:
+                        member = f'QQ用户{user_id}'
+                except:
+                    # 为什么是QQ用户，因为就QQ可能拿不到成员name...
                     member = f'QQ用户{user_id}'
-            except:
-                # 为什么是QQ用户，因为就QQ可能拿不到成员name...
-                member = f'QQ用户{user_id}'
-            content = f"[{'群组消息:'+str(session.guild.name)+'|'+member if session.isGroupMsg else '私聊消息:'+member}]"+str(session.message.content)
-            # logging.info(( {member} )" + session.message.content)
-            logging.info(content)
+                content = f"[{'触发事件:'+str(session.guild.name)+'|'+member if session.isGroupMsg else '触发事件:'+member}]"+str(session.type)
+                # logging.info(( {member} )" + session.message.content)
+                logging.info(content)
+            
         elif data['op'] == 2:
             # print('[心跳状态：存活]')
             logging.info("心跳存活")
@@ -68,7 +79,7 @@ class Session:
         
         
         
-        self.isGroupMsg = self.guild.name != None
+        self.isGroupMsg = self.guild.id != None
 
 
 
