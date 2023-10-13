@@ -40,6 +40,7 @@ class MessageService:
 
 
 
+
 class Session:
     def __init__(self, body):
         self.id = body.get('id')
@@ -53,6 +54,17 @@ class Session:
         self.member = body.get('member', {})
         self.message = Message(body.get('message', {}))
         self.isGroupMsg = self.guild.name != None
+
+class setMsgSession(Session):
+    def __init__(self,platform, channel_id, self_id) -> None:
+        body = {
+            'platform':platform,
+            'guild':{
+                'id':channel_id
+            },
+            'self_id':self_id
+        }
+        super().__init__(self,body)
 
 class User:
     def __init__(self, user_info):
