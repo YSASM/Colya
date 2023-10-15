@@ -1,9 +1,6 @@
 import asyncio
-import aiohttp
 import json
 import websockets
-import threading
-import time
 from Colya.Config.config  import Config
 import logging
 from .MessageService import MessageService

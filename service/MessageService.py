@@ -6,6 +6,7 @@ import requests
 from Colya.Config.config import Config
 from Colya.utils.utils import async_call,msgFormat
 from Colya.plugin.loadPlugin import Loader
+# from Colya import Manager
 class MessageService:
     def __init__(self) -> None:
         self.pluginLoader = Loader()
@@ -20,6 +21,7 @@ class MessageService:
             bot_name = data['body']['logins'][0]['user']['name']
             self.pluginLoader.load()
             logging.info(f"Satori服务已连接，{bot_name} 已上线 [{platform}] ！")
+            # Manager.start()
         elif data['op'] == 0:
             session = Session(data["body"])
             user_id = session.user.id
