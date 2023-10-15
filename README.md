@@ -72,8 +72,9 @@ bot-
     |-plugin-|-newPlugin-|-main.py
              |           |-config.json
              |
-```          |-newPlugin2-|-main.py
+             |-newPlugin2-|-main.py
                           |-config.json
+```
 
 * 编写config.json(没有config.json时所有参数均为默认值)
 ```
@@ -91,6 +92,7 @@ bot-
     "pass_friend":["123123","123"]//生效id，不填对所有人生效
 }
 ```
+
 * 编写main.py(file_name.py)
 ```
 //SendMessage为发送消息的类
