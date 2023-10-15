@@ -4,12 +4,12 @@ import  logging
 class Config:
     def __init__(self) -> None:
         try:
-            self.config = json.load(open('config.json'))
+            self.config = json.load(open('config.json','r',encoding='utf-8'))
         except:
             logging.error('获取config.json失败')
             exit(0)
-    def getConfig(self):
-        return self.config
+    def getConfig(self,key,default=None):
+        return self.config.get(key,default)
     def getPort(self):
         return self.config.get('port','5500')
     def getHost(self):

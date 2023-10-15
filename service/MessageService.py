@@ -9,7 +9,6 @@ from Colya.plugin.loadPlugin import Loader
 class MessageService:
     def __init__(self) -> None:
         self.pluginLoader = Loader()
-        self.pluginLoader.load()
     @async_call
     def receive(self,msg):
         # data = json.loads(message)
@@ -19,43 +18,25 @@ class MessageService:
         if data['op'] == 4:
             platform = data['body']['logins'][0]['platform']
             bot_name = data['body']['logins'][0]['user']['name']
+            self.pluginLoader.load()
             logging.info(f"Satori服务已连接，{bot_name} 已上线 [{platform}] ！")
         elif data['op'] == 0:
             session = Session(data["body"])
             user_id = session.user.id
-            if 'message' in session.type:
-                if not session.message.content:
-                    return
-                else:
-                    try:
-                        self.pluginLoader.matchMsgPlugin(session)
-                    except Exception as e:
-                        logging.error("插件运行出错:",e)
-                try:
-                    member = session.user.name
-                    if not member:
-                        member = f'QQ用户{user_id}'
-                except:
-                    # 为什么是QQ用户，因为就QQ可能拿不到成员name...
+            try:
+                self.pluginLoader.matchPlugin(session)
+            except Exception as e:
+                logging.error("插件运行出错:",e)
+            try:
+                member = session.user.name
+                if not member:
                     member = f'QQ用户{user_id}'
-                content = f"[{'群组消息:'+str(session.guild.name)+'|'+member if session.isGroupMsg else '私聊消息:'+member}]"+str(session.message.content)
-                # logging.info(( {member} )" + session.message.content)
-                logging.info(content)
-            else:
-                try:
-                    self.pluginLoader.matchEventPlugin(session)
-                except Exception as e:
-                    logging.error("插件运行出错:",e)
-                try:
-                    member = session.user.name
-                    if not member:
-                        member = f'QQ用户{user_id}'
-                except:
-                    # 为什么是QQ用户，因为就QQ可能拿不到成员name...
-                    member = f'QQ用户{user_id}'
-                content = f"[{'触发事件:'+str(session.guild.name)+'|'+member if session.isGroupMsg else '触发事件:'+member}]"+str(session.type)
-                # logging.info(( {member} )" + session.message.content)
-                logging.info(content)
+            except:
+                # 为什么是QQ用户，因为就QQ可能拿不到成员name...
+                member = f'QQ用户{user_id}'
+            content = f"['触发事件:'{str(session.type)}][{str(session.guild.name)+'|'+member if session.isGroupMsg else member}]{str(session.message.content)}"
+            # logging.info(( {member} )" + session.message.content)
+            logging.info(content)
             
         elif data['op'] == 2:
             # print('[心跳状态：存活]')
