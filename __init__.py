@@ -26,7 +26,7 @@ for h in logger.handlers:
     logger.removeHandler(h)
 fmt = "[%(asctime)s] [%(levelname)s] [%(filename)s:%(lineno)d] %(message)s"
 file_handler = handlers.TimedRotatingFileHandler(
-    filename="log/bot.log", when="D", interval=1, backupCount=14,encoding='utf-8'
+    filename="log/bot.log", encoding='utf-8'
 )
 file_handler.setFormatter(logging.Formatter(fmt))
 file_handler.setLevel(logging.INFO)
