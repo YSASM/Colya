@@ -99,13 +99,20 @@ bot-
 from  Colya.service.MessageService import SendMessage,setMsgSession
 //此处main为config.json中配置的start_fun
 from Colya.plugin.base import PluginBase
-//主函数要接收一个context
+//type为event时主函数要接收一个context，setup和task没有参数
 def main(context):
     //先调用一下base格式化context信息
     //context中包含session(触发事件的所有参数信息)和历史session信息
     base = PluginBase(context)
     //dictionary中有所有功能的实现方式
     base.dictionary.MessageCreate(base.session_guild_id,"测试回复").do()
+
+--------------------------------------------------------------------------
+可以单独调用Dictionary
+from Colya.dictionary.dictionary import Dictionary
+def main():
+    dict = Dictionary('机器人id')
+    dict.MessageCreate('群号','启动').do()
 
 ```
 

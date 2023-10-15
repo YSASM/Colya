@@ -57,8 +57,16 @@ class _Base:
 
 
 class Dictionary:
+    '''
+    字典类
 
-    def __init__(self, p, sid) -> None:
+    包含所有操作的实现方法
+
+    :param p string	平台(默认chronocat)
+    :param sid string	机器人id
+。
+    '''
+    def __init__(self, sid, p='chronocat') -> None:
         global platform, self_id
         platform = p
         self_id = sid
