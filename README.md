@@ -16,9 +16,11 @@ git clone https://gitee.com/YSASM/Colya.git
 
 ## 配置：
 
-* 运行setup.py(把setup.py移动到Colya同级目录然后python setup.py install)或者直接把Colya放进bot的主目录
-
 * 创建bot主目录，编写一个启动文件
+
+* 直接把Colya放进bot的主目录
+
+
 
 ```
 bot-
