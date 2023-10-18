@@ -3,19 +3,27 @@ import json
 from logging import handlers
 import os
 
+flage = False
 if (not os.path.exists('log')):
     os.mkdir('log')
+    flage = True
 
 if (not os.path.exists('log/bot.log')):
-    open('log/bot.log', "w").close()
+    open('log/bot.log', "w")
+    flage = True
+
 
 if (not os.path.exists('console.bat')):
     open('console.bat', "w").write(f"node {os.path.join(os.path.dirname(os.path.abspath(__file__)))+'/service/Manager/console/app.js'}")
+    flage = True
+
 if (not os.path.exists('console.sh')):
     open('console.sh', "w").write(f"node {os.path.join(os.path.dirname(os.path.abspath(__file__)))+'/service/Manager/console/app.js'}")
+    flage = True
 
 if (not os.path.exists('plugin')):
     os.mkdir('plugin')
+    flage = True
 
 if (not os.path.exists('config.json')):
     open('config.json', "w").write(json.dumps({
@@ -25,8 +33,10 @@ if (not os.path.exists('config.json')):
     "heart_beat_cd":10,
     "session_exp_ts":60,
     "console_service":True
-    })).close()
-    logging.info("请填写config.json后再启动")
+    }))
+    flage = True
+if flage:
+    print("目录创建完成，请重启。")
     exit(0)
 
 
