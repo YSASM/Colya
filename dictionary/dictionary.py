@@ -2,7 +2,7 @@ import json
 import requests
 import logging
 
-from Colya.Config.config import Config
+from Colya.bot import config
 
 
 POST = 'post'
@@ -13,7 +13,6 @@ self_id = ""
 
 class Call:
     def __init__(self, method, url, platform, self_id, data) -> None:
-        self.config = Config()
         self.method = method
         self.url = url
         self.data = data
@@ -23,11 +22,11 @@ class Call:
     def run(self):
         # API endpoint
         # 替换为实际API endpoint
-        endpoint = f'http://{self.config.getHost()}:{self.config.getPort()}/v1{self.url}'
+        endpoint = f'http://{config.getHost()}:{config.getPort()}/v1{self.url}'
         # 构建请求头
         headers = {
             'Content-Type': 'application/json',
-            'Authorization': f'Bearer {self.config.getToken()}',
+            'Authorization': f'Bearer {config.getToken()}',
             'X-Platform': self.platform,
             'X-Self-ID': self.self_id
         }

@@ -1,27 +1,24 @@
 import asyncio
 import json
 import websockets
-from Colya.Config.config  import Config
 import logging
-from .MessageService import MessageService
+from Colya.bot import config
 
 class WebSocket:
-    def __init__(self):
-        self.config = Config()
-        self.websocket = None
-        self.token = self.config.getToken()
-        self.ws_url = f"ws://{self.config.getHost()}:{self.config.getPort()}/v1/events"
-        self.msgservice = MessageService()
+    def __init__(self,callBack):
+        self.token = config.getToken()
+        self.ws_url = f"ws://{config.getHost()}:{config.getPort()}/v1/events"
+        self.callBack = callBack
     
     async def connect(self):
         # 链接ws
-        self.websocket = await websockets.connect(self.ws_url)
-        if(not self.websocket):
+        websocket = await websockets.connect(self.ws_url)
+        if(not websocket):
             logging.error("websocket链接失败。。。。。。")
             return None
         logging.info("websocket链接成功,开始连接Satori服务。。。。。。")
         # 链接satori
-        await self.websocket.send(json.dumps({
+        await websocket.send(json.dumps({
             "op": 3,
             "body": {
                 "token": self.token,
@@ -29,20 +26,20 @@ class WebSocket:
             }
         }))
         # 心跳测试
-        asyncio.create_task(self._heart())
+        asyncio.create_task(self._heart(websocket))
         # 开始接收消息
         while True:
             try:
-                message = await self.websocket.recv()
-                self.msgservice.receive(message)
+                message = await websocket.recv()
+                self.callBack(message)
             except websockets.ConnectionClosed:
-                print("WebSocket connection closed.")
+                logging.error("WebSocket 链接丢失......")
                 break
-    async def _heart(self):
-        await self.websocket.send(json.dumps({
+    async def _heart(self,websocket):
+        await websocket.send(json.dumps({
             "op": 1,
             "body": {
                 "美少女客服": "我是一只心跳猫猫"
             }
         }))
-        await asyncio.sleep(self.config.getHeartbeatCd()) 
+        await asyncio.sleep(config.getHeartbeatCd()) 

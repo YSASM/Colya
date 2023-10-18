@@ -82,17 +82,19 @@ bot-
 {
     "name":"newPlugin",//插件名称（目前没用）
     "version":"0.1",//插件版本（目前没用）
-    "start_fun":"main",//启动函数（在main.py中的启动函数的函数名）不填默认main
-    "file_name":"main",//启动函数所在的文件名，不填默认main
     "type":"event",//插件类型（event,setup,task）msg表示收到消息会运行的，setup是开始就运行的，task是定时任务不填默认event
-    "event_type":["message-created"]//插件类型为event时生效，触发事件不填不过滤
     "match_content":".*"//插件类型为event时生效，填入正则表达式，收到消息匹配成功时运行插件,不填不过滤
     "task_time":1000//插件类型为task时生效，为定时任务间隔时间（秒）,默认10
+    "event_type":["message-created"]//插件类型为event时生效，触发事件不填不过滤
+    "start_fun":"main",//启动函数（在main.py中的启动函数的函数名）不填默认main
+    "cmd_fun":"cmd",//启动函数（在main.py中的命令函数的函数名）不填默认cmd
+    "file_name":"main",//启动函数所在的文件名，不填默认main
     "pass_group":["123","123123"]//生效群号，不填对所有群生效
     "pass_friend":["123123","123"]//生效id，不填对所有人生效
+    "cmd_help":"/newPlugin [xxx参数] [xxx参数]",//命令提示
+    "off":"False"//是否关闭插件
 }
 ```
-
 * 编写main.py(file_name.py)
 ```
 //SendMessage为发送消息的类

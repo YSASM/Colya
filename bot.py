@@ -1,10 +1,11 @@
-import asyncio
-from Colya.service.WebSocket import WebSocket
+
+from Colya.Config import Config
+config = Config()
+from Colya.service import Work
 
 class Bot:
     def __init__(self) -> None:
-        self.wb = WebSocket()
+        self.work = Work()
         
     def run(self):
-        
-        asyncio.get_event_loop().run_until_complete(self.wb.connect())
+        self.work.start()
