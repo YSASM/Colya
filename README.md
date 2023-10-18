@@ -93,7 +93,7 @@ bot-
     "file_name":"main",//启动函数所在的文件名，不填默认main
     "pass_group":["123","123123"]//生效群号，不填对所有群生效
     "pass_friend":["123123","123"]//生效id，不填对所有人生效
-    "cmd_help":"/newPlugin [xxx参数] [xxx参数]",//命令提示
+    "cmd_help":["/newPlugin [xxx参数] [xxx参数]"],//命令提示
     "off":"False"//是否关闭插件
 }
 ```
@@ -117,6 +117,16 @@ from Colya.dictionary import Dictionary
 def main():
     dict = Dictionary('机器人id')
     dict.MessageCreate('群号','内容').do()
+
+------------------------------------------------------------------------------
+//示例
+from Colya.plugin.base import PluginBase
+from Colya import logging
+def main(context):
+    base = PluginBase(context)
+    logging.info(base.session_content)
+def cmd(cmd,*args):
+    logging.info(cmd)
 
 ```
 
