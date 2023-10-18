@@ -18,9 +18,14 @@ if (not os.path.exists('plugin')):
     os.mkdir('plugin')
 
 if (not os.path.exists('config.json')):
-    open('config.json', "w").write(json.dumps(
-        {"host": "localhost", "port": "5500", "token": "", "heart_beat_cd": 60, "session_exp_ts": 3600}
-    )).close()
+    open('config.json', "w").write(json.dumps({
+    "host":"127.0.0.1",
+    "port":"5500",
+    "token":"",
+    "heart_beat_cd":10,
+    "session_exp_ts":60,
+    "console_service":True
+    })).close()
     logging.info("请填写config.json后再启动")
     exit(0)
 

@@ -36,10 +36,11 @@ class WebSocket:
                 logging.error("WebSocket 链接丢失......")
                 break
     async def _heart(self,websocket):
-        await websocket.send(json.dumps({
-            "op": 1,
-            "body": {
-                "美少女客服": "我是一只心跳猫猫"
-            }
-        }))
-        await asyncio.sleep(config.getHeartbeatCd()) 
+        while True:
+            await websocket.send(json.dumps({
+                "op": 1,
+                "body": {
+                    "test": "heart"
+                }
+            }))
+            await asyncio.sleep(config.getHeartbeatCd()) 

@@ -90,4 +90,5 @@ class Work:
             
         elif data['op'] == 2:
             # print('[心跳状态：存活]')
-            logging.info("心跳存活")
+            # 
+            pass

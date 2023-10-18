@@ -18,7 +18,7 @@ git clone https://gitee.com/YSASM/Colya.git
 
 * 运行setup.py或者直接把Colya放进bot的主目录
 
-* 创建波特主目录，编写一个启动文件
+* 创建bot主目录，编写一个启动文件
 
 ```
 bot-
