@@ -114,13 +114,20 @@ def main(context):
 from Colya.dictionary.dictionary import Dictionary
 def main():
     dict = Dictionary('机器人id')
-    dict.MessageCreate('群号','启动').do()
+    dict.MessageCreate('群号','内容').do()
 
 ```
 
 ## 以实现功能
 
-* 发送消息
+- [x] 接收发送消息
+- [x] 动态加载插件
+- [x] 插件config
+- [x] console控制台
+
+
+
+
 
 ## 感谢
  
