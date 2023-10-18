@@ -3,7 +3,7 @@ import logging
 import asyncio
 from Colya.plugin import Loader
 from .Session import Session
-from Colya.utils.utils import async_call, msgFormat
+from Colya.utils import async_call, msgFormat
 from .WebSocket import WebSocket
 from .Manager import HttpService
 from Colya.bot import config as globaConfig

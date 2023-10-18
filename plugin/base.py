@@ -1,4 +1,4 @@
-from Colya.dictionary.dictionary import Dictionary
+from Colya.dictionary import Dictionary
 class PluginBase():
     def __init__(self,context) -> None:
         self.session = context.session

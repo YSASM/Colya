@@ -4,7 +4,7 @@ import os
 import re
 import time
 from importlib import import_module
-from Colya.utils.utils import async_call
+from Colya.utils import async_call
 from Colya.bot import config
 from Colya.service import logging
 
