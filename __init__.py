@@ -2,7 +2,6 @@ import logging
 import json
 from logging import handlers
 import os
-import os
 
 if (not os.path.exists('log')):
     os.mkdir('log')
@@ -12,6 +11,8 @@ if (not os.path.exists('log/bot.log')):
 
 if (not os.path.exists('console.bat')):
     open('console.bat', "w").write(f"node {os.path.join(os.path.dirname(os.path.abspath(__file__)))+'/service/Manager/console/app.js'}")
+if (not os.path.exists('console.sh')):
+    open('console.sh', "w").write(f"node {os.path.join(os.path.dirname(os.path.abspath(__file__)))+'/service/Manager/console/app.js'}")
 
 if (not os.path.exists('plugin')):
     os.mkdir('plugin')

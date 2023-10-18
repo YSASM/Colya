@@ -12,7 +12,7 @@ class Work:
     def __init__(self) -> None:
         self.plugin = Loader()
         self.ws =  WebSocket(self.receiveMsg)
-        if globaConfig.getConfig("httpservice",True):
+        if globaConfig.getConfig("console_service",False):
             self.setHttpService()
         
     def setHttpService(self):
@@ -47,6 +47,7 @@ class Work:
             consoleLog.append(msg+''.join(args))
             self.hs.setValue('consoleLog',consoleLog)
         logging.text = fun3
+        logging.text("输入/help查看帮助")
         
         
     
@@ -65,7 +66,9 @@ class Work:
             bot_name = data['body']['logins'][0]['user']['name']
             logging.info(f"Satori服务已连接，{bot_name} 已上线 [{platform}] ！")
             self.plugins = self.plugin.load()
-            self.hs.start()
+            try:
+                self.hs.start()
+            except:pass
             # Manager.start()
         elif data['op'] == 0:
             session = Session(data["body"])

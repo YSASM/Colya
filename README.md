@@ -1,10 +1,5 @@
-
-
-
 <h1 align="center"> Colya BOT </h1>
-<!-- <div align="center"> <img src="./logo.jpg" width="120"/> </div> -->
 <div align="center">v0.1.0</div>
-<!-- <div align="center">  人間になりたいうた... -->
 </div>
 
 
@@ -46,6 +41,8 @@ bot-
     |-Colya
     |-log--bot.log
     |-plugin
+    |-console.bat
+    |-console.sh
 ```
 
 * 然后填写config.json文件,填写token即可
@@ -57,9 +54,12 @@ bot-
     //心跳间隔
     "heart_beat_cd": 60,
     //历史session过期事件(秒)
-    "session_exp_ts":3600
+    "session_exp_ts":3600，
+    "console_service":True//是否开启console服务端
 }
 ```
+* 执行console.bat或console.sh需要先设置http_service为True并且确认已经安装了nodejs环境,服务器端请开启7796端口和8080端口
+* 由于技术原因未实现config配置console端口,如需变更端口，自行修改代码或者使用nginx等工具
 
 ## 编写插件
 * 在plugin文件夹中创建你的插件目录，在插件目录下创建config.json和main.py

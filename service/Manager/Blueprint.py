@@ -12,6 +12,12 @@ def creat_blue_print(callback):
         data[key] = value
     def getValue(key):
          return data.get(key)
+    @blue_print.route('/test',methods=['get'])
+    def Test():
+        return jsonify({
+            'message':'ok',
+            'code':0,
+        })
     @blue_print.route('/data',methods=['get'])
     def Data():
         return jsonify({
