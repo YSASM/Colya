@@ -12,7 +12,7 @@ self_id = ""
 
 
 class Call:
-    def __init__(self, method, url, platform, self_id, data) -> None:
+    def __init__(self, method, url, data) -> None:
         self.method = method
         self.url = url
         self.data = data
@@ -36,23 +36,23 @@ class Call:
         # 检查响应
         if response.status_code == 200:
             logging.info(f'[操作成功:{self.url}]({response.status_code}){str(self.data)}')
-            return response.text
+            try:
+                return json.loads(response.text)
+            except:
+                return response.text
         else:
             logging.info(f'[操作失败:{self.url}]({response.status_code}){str(self.data)}')
             return None
 
 
 class _Base:
-    def __init__(self, method, url, platform, self_id, data) -> None:
+    def __init__(self, method, url, data) -> None:
         self.method = method
         self.url = url
         self.data = data
-        self.platform = platform
-        self.self_id = self_id
 
     def do(self):
-        Call(self.method, self.url, self.platform,
-             self.self_id, self.data).run()
+        return Call(self.method, self.url, self.data).run()
 
 
 class Dictionary:
@@ -64,7 +64,7 @@ class Dictionary:
         def __init__(self, method, url, data) -> None:
             self.baseUrl = '/channel'
             super().__init__(
-                method, f'{self.baseUrl}.{url}', platform, self_id, data)
+                method, f'{self.baseUrl}.{url}',  data)
 
     class TypeChannel:
         '''
@@ -196,7 +196,7 @@ class Dictionary:
         def __init__(self, method, url, data) -> None:
             self.baseUrl = '/guild'
             super().__init__(
-                method, f'{self.baseUrl}.{url}', platform, self_id, data)
+                method, f'{self.baseUrl}.{url}',  data)
 
     class TypeGuild:
         '''
@@ -278,7 +278,7 @@ class Dictionary:
         def __init__(self, method, url, data) -> None:
             self.baseUrl = '/guild.member'
             super().__init__(
-                method, f'{self.baseUrl}.{url}', platform, self_id, data)
+                method, f'{self.baseUrl}.{url}',  data)
 
     class TypeGuildMember:
         '''
@@ -380,7 +380,7 @@ class Dictionary:
         def __init__(self, method, url, data) -> None:
             self.baseUrl = '/guild.member.role'
             super().__init__(
-                method, f'{self.baseUrl}.{url}', platform, self_id, data)
+                method, f'{self.baseUrl}.{url}',  data)
 
     class TypeGuildRole:
         '''
@@ -516,7 +516,7 @@ class Dictionary:
         def __init__(self, method, url, data) -> None:
             self.baseUrl = '/login'
             super().__init__(
-                method, f'{self.baseUrl}.{url}', platform, self_id, data)
+                method, f'{self.baseUrl}.{url}',  data)
 
     class TypeLogin:
         '''
@@ -572,7 +572,7 @@ class Dictionary:
         def __init__(self, method, url, data) -> None:
             self.baseUrl = '/message'
             super().__init__(
-                method, f'{self.baseUrl}.{url}', platform, self_id, data)
+                method, f'{self.baseUrl}.{url}',  data)
 
     class TypeMessage:
         '''
@@ -692,7 +692,7 @@ class Dictionary:
         def __init__(self, method, url, data) -> None:
             self.baseUrl = '/user'
             super().__init__(
-                method, f'{self.baseUrl}.{url}', platform, self_id, data)
+                method, f'{self.baseUrl}.{url}',  data)
 
     class TypeUser:
         '''
