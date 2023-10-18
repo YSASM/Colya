@@ -120,6 +120,16 @@ def main():
 
 ```
 
+## 日志
+```
+from Colya import logging
+logging.info("xxx")
+logging.warn("xxx")
+logging.error("xxx")
+//logging.text只有在console_service开启时可用
+logging.text("xxx")
+```
+
 ## 以实现功能
 
 - [x] 接收发送消息
