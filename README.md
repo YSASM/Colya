@@ -64,7 +64,7 @@ bot-
 * 由于技术原因未实现config配置console端口,如需变更端口，自行修改代码或者使用nginx等工具
 
 ## 编写插件
-* 在plugin文件夹中创建你的插件目录，在插件目录下创建config.json和main.py
+* 在plugin文件夹中创建你的插件目录，在插件目录下创建config.json和main.py，放在目录里就能加载出来，不用声明其他东西
 plugin下每个文件夹为一个插件
 ```
 bot-
