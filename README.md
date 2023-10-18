@@ -115,7 +115,7 @@ def main(context):
 可以单独调用Dictionary
 from Colya.dictionary import Dictionary
 def main():
-    dict = Dictionary('机器人id')
+    dict = Dictionary()
     dict.MessageCreate('群号','内容').do()
 
 ------------------------------------------------------------------------------

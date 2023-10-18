@@ -7,6 +7,7 @@ from Colya.utils import async_call, msgFormat
 from .WebSocket import WebSocket
 from .Manager import HttpService
 from Colya.bot import config as globaConfig
+from Colya import dictionary
 
 class Work:
     def __init__(self) -> None:
@@ -64,6 +65,8 @@ class Work:
         if data['op'] == 4:
             platform = data['body']['logins'][0]['platform']
             bot_name = data['body']['logins'][0]['user']['name']
+            dictionary.platform = platform
+            dictionary.self_id = data['body']['logins'][0]['self_id']
             logging.info(f"Satori服务已连接，{bot_name} 已上线 [{platform}] ！")
             self.plugins = self.plugin.load()
             try:

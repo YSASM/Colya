@@ -9,4 +9,4 @@ class PluginBase():
         self.plugin = context.plugin
         self.memberHistor = context.getMember(self.session.user.id)
         self.groupHistory = context.getGroupMember(self.session.guild.id,self.session.user.id)
-        self.dictionary = Dictionary(self.session.self_id,self.session.platform)
+        self.dictionary = Dictionary()
