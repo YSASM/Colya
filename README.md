@@ -4,7 +4,7 @@
 
 
 ***
-
+# 停止维护
 
 ## 安装：
 
@@ -146,12 +146,4 @@ logging.text("xxx")
 - [x] 动态加载插件
 - [x] 插件config
 - [x] console控制台
-
-
-
-
-
-## 感谢
- 
-* 框架由https://github.com/kumoSleeping/TomorinBot提供技术参考
 
